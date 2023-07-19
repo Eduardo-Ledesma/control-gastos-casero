@@ -12,7 +12,7 @@ const ChooseUser = () => {
                 <button type='button'
                     className='w-1/2 mx-auto sm:mx-0 sm:w-auto border-2 border-green-600 rounded-md hover:cursor-pointer transition-all 
                     hover:scale-110 hover:border-white'
-                    onClick={handleUser}  
+                    onClick={() => handleUser(1)}  
                 >
                     <p className='font-bold text-2xl sm:text-4xl text-center py-2 text-green-600'>Ledu</p>
                     <img src="/img/gigachad.jpg" alt="foto ledu"
@@ -23,7 +23,7 @@ const ChooseUser = () => {
                 <button type='button' 
                     className='w-1/2 mx-auto sm:mx-0 sm:w-auto border-2 border-green-600 rounded-md hover:cursor-pointer transition-all 
                     hover:scale-110 hover:border-white'
-                    onClick={handleUser}
+                    onClick={() => handleUser(2)}
                 >
                     <p className='font-bold text-2xl sm:text-4xl text-center py-2 text-green-600'>Janis</p>
                     <img src="/img/zendaya.avif" alt="foto janis"
