@@ -4,6 +4,7 @@ import useAdmin from '../hooks/useAdmin'
 
 function FormAddExpense() {
 
+    const [id, setId] = useState(null)
     const [category, setCategory] = useState('')
     const [type, setType] = useState('')
     const [price, setPrice] = useState('')
@@ -11,7 +12,34 @@ function FormAddExpense() {
     const [typeAlert, setTypeAlert] = useState({})
     const [priceAlert, setPriceAlert] = useState({})
 
-    const { formAddExpense, handleFormAddExpense, handleAddExpense } = useAdmin()
+    const { formAddExpense, handleFormAddExpense, handleAddExpense, expense, handleConfirmEditExpense } = useAdmin()
+
+    useEffect(() => {
+        if(formAddExpense === true) {
+            if(expense?.category) {
+                const { category, type, price, id } = expense
+                setCategory(category)
+                setType(type)
+                setPrice(price)
+                setId(id)
+            } else {
+                setCategory('')
+                setType('')
+                setPrice('')
+            }
+        } else {
+            setCategory('')
+            setType('')
+            setPrice('')
+            setId(null)
+        }
+    }, [formAddExpense, expense])
+
+    // useEffect(() => {
+    //     setCategory('')
+    //     setType('')
+    //     setPrice('')
+    // }, [handleFormAddExpense])
 
     useEffect(() => {
         category.length && setCategoryAlert({})
@@ -38,10 +66,16 @@ function FormAddExpense() {
         if(!type.trim()) return setTypeAlert({ msg: 'Poneme un nombre fiera'})
         if(price <= 0) return setPriceAlert({ msg: 'Poneme un precio fiera'})
         
-        handleAddExpense({ category, type, price, id: Date.now() })
+        if(id) {
+            handleConfirmEditExpense({ category, type, price, id }) // Editar gasto
+        } else {
+            handleAddExpense({ category, type, price, id: Date.now() }) // Agregar gasto
+        }
+        
         setCategory('')
         setType('')
         setPrice('')
+        setId(null)
     }
 
     return (
@@ -96,7 +130,7 @@ function FormAddExpense() {
                             <div className="sm:flex sm:items-start">
                                 <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left w-full">
                                     <Dialog.Title as="h2" className="text-3xl leading-6 font-bold text-green-500 text-center">
-                                        Agregar Gasto
+                                        { expense?.category ? 'Editar Gasto' : 'Agregar Gasto' }
                                     </Dialog.Title>
                                     <form className='mt-10 mb-6'
                                         onSubmit={handleSubmit}
@@ -153,7 +187,7 @@ function FormAddExpense() {
                                         </div>
 
                                         <input type="submit"
-                                            value='Agregar gasto'
+                                            value={ expense?.category ? 'Editar gasto' : 'Agregar gasto'}
                                             className='bg-green-700 hover:bg-green-800 w-full p-3 mt-4 text-white uppercase 
                                             font-bold hover:cursor-pointer transition-colors rounded text-lg'
                                         />

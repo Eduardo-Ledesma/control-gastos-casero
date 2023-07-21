@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import MyDialog from './FormAddExpense';
+import FormAddExpense from './FormAddExpense';
 import animation from '../css/Animation.module.css'
 import useAdmin from '../hooks/useAdmin'
 
@@ -87,7 +87,7 @@ const Header = () => {
             </button>
         </nav>
 
-        <MyDialog />
+        <FormAddExpense />
     </>
     )
 }
