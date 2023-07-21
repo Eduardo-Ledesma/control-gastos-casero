@@ -58,9 +58,7 @@ const Expense = ({expense}) => {
             
             <p className="text-lg text-green-500 absolute left-2 top-2">{userName}</p>
             <div className="flex flex-col">
-                <h3 className="text-white text-center font-bold text-3xl mb-4">
-                    {type}
-                </h3>
+                <h3 className="text-white text-center font-bold text-3xl pt-4 mb-4">{type}</h3>
                 <div className="flex gap-6 items-center">        
                     <p className="text-2xl text-amber-500 font-bold">${price}</p>
                     <p className="text-white bg-green-700 py-1 px-3 mx-auto text-center rounded-full text-md">
