@@ -7,7 +7,11 @@ const ShowTotal = () => {
     const [buys, setBuys] = useState('')
     const [cat, setCat] = useState('')
     const [allowed, setAllowed] = useState('')
-    const { total, expenses } = useAdmin()
+    const [division, setDivision] = useState(null)
+    const [debe, setDebe] = useState('')
+    const [favor, setFavor] = useState('')
+    
+    const { total, expenses, expensesUser1, expensesUser2 } = useAdmin()
 
     const calculateCategory = () => {
         setFixed(expenses.filter(exp => exp.category === 'gastosFijos').reduce((acc, exp) => exp.price + acc, 0))
@@ -15,6 +19,22 @@ const ShowTotal = () => {
         setCat(expenses.filter(exp => exp.category === 'gato').reduce((acc, exp) => exp.price + acc, 0))
         setAllowed(expenses.filter(exp => exp.category === 'permitidos').reduce((acc, exp) => exp.price + acc, 0))
     }
+
+    const calculateDivision = () => {
+        if(expensesUser1 > expensesUser2) {
+            setDivision((expensesUser1 - expensesUser2) / 2)
+            setDebe('Janis')
+            setFavor('Edu')
+        } else {
+            setDivision((expensesUser2 - expensesUser1) / 2)
+            setDebe('Edu')
+            setFavor('Janis')
+        }
+    }
+
+    useEffect(() => {
+        calculateDivision()
+    }, [total])
 
     useEffect(() => {
         calculateCategory()
@@ -33,7 +53,11 @@ const ShowTotal = () => {
                 { buys > 0 && <p className="mb-1 text-lg">Compras: <span className="text-amber-500 font-bold">${buys}</span></p> }
                 { cat > 0 && <p className="mb-1 text-lg">Gato: <span className="text-amber-500 font-bold">${cat}</span></p> }
                 { allowed > 0 && <p className="text-lg">Permitidos: <span className="text-amber-500 font-bold">${allowed}</span></p> }
+                <p className="mb-1 mt-4 text-lg">Edu gastó: <span className="text-amber-500 font-bold">${expensesUser1}</span></p>
+                <p className="text-lg">Janis gastó: <span className="text-amber-500 font-bold">${expensesUser2}</span></p>
+                <p className="text-2xl mt-4 text-green-500 ">{debe} debe: <span className="text-amber-500 font-bold">${division}</span> a {favor}.</p>
             </div>
+
         </>
     )
 }

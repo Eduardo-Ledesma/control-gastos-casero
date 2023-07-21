@@ -10,11 +10,20 @@ const AdminProvider = ({children}) => {
     const [expenses, setExpenses] = useState(JSON.parse(localStorage.getItem('expenses')) ?? [])
     const [total, setTotal] = useState(0)
     const [expense, setExpense] = useState({})
+    const [expensesUser1, setExpensesUser1] = useState([])
+    const [expensesUser2, setExpensesUser2] = useState([])
+
+    const divideExpenses = () => {
+        setExpensesUser1(expenses.filter(exp => exp.user === 1).reduce((acc, exp) => exp.price + acc, 0))
+        setExpensesUser2(expenses.filter(exp => exp.user === 2).reduce((acc, exp) => exp.price + acc, 0))
+    }    
 
     const resetApp = () => {
         setExpenses([])
         setTotal(0)
         setUser(null)
+        setExpensesUser1([])
+        setExpensesUser2([])
         localStorage.removeItem('expenses')
     }
 
@@ -26,6 +35,7 @@ const AdminProvider = ({children}) => {
     useEffect(() => {
         localStorage.setItem('expenses', JSON.stringify(expenses))
         calcTotal()
+        divideExpenses()
     }, [expenses])
 
     // Agregar el gasto
@@ -115,7 +125,9 @@ const AdminProvider = ({children}) => {
             handleConfirmEditExpense,
             handleDeleteExpense,
             expense,
-            resetApp
+            resetApp,
+            expensesUser1,
+            expensesUser2,
         }}
     >
         {children}
