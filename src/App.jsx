@@ -23,10 +23,10 @@ function App() {
           <ToastContainer />
           <main>
             { expenses.length ? (
-              <article className='mt-16 px-4 md:px-16'>
+              <article className='mt-16 px-4 lg:px-10'>
                   <h2 className='text-center text-4xl text-green-400 mb-14 font-bold'>Gastos Registrados:</h2>
-                  <section className='flex'>
-                    <div className='flex gap-6 md:w-4/6 flex-wrap h-fit'>
+                  <section className='flex flex-col gap-y-10 xl:flex-row lg:gap-x-4 xl:px-10 justify-around'>
+                    <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-6 h-fit'>
                     { expenses.map(expense => (
                       <Expense 
                           key={expense.id}
@@ -34,7 +34,7 @@ function App() {
                       />
                     ))}
                     </div>
-                    <div className='text-white md:w-2/6 text-center border-2 border-green-500 rounded-xl py-12 h-fit'>
+                    <div className='text-white text-center border-2 border-green-500 rounded-xl py-12 lg:px-4 2xl:px-6 mb-8 h-fit'>
                       <ShowTotal />
                     </div>
                   </section>

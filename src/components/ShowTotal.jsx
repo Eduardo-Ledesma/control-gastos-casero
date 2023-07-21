@@ -23,8 +23,8 @@ const ShowTotal = () => {
     return (
         <>
             <div className="flex gap-3 justify-center items-center mb-10">
-                <h3 className='font-bold text-5xl'>Total:</h3>
-                <p className='text-amber-500 font-bold text-5xl'>${total}</p>
+                <h3 className='font-bold text-3xl sm:text-5xl'>Total:</h3>
+                <p className='text-amber-500 font-bold text-3xl sm:text-5xl animate__animated animate__heartBeat'>${total}</p>
             </div>
 
             <div>

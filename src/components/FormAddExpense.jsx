@@ -12,7 +12,7 @@ function FormAddExpense() {
     const [typeAlert, setTypeAlert] = useState({})
     const [priceAlert, setPriceAlert] = useState({})
 
-    const { formAddExpense, handleFormAddExpense, handleAddExpense, expense, handleConfirmEditExpense } = useAdmin()
+    const { formAddExpense, handleFormAddExpense, handleAddExpense, expense, handleConfirmEditExpense, user } = useAdmin()
 
     useEffect(() => {
         if(formAddExpense === true) {
@@ -34,12 +34,6 @@ function FormAddExpense() {
             setId(null)
         }
     }, [formAddExpense, expense])
-
-    // useEffect(() => {
-    //     setCategory('')
-    //     setType('')
-    //     setPrice('')
-    // }, [handleFormAddExpense])
 
     useEffect(() => {
         category.length && setCategoryAlert({})
@@ -67,9 +61,9 @@ function FormAddExpense() {
         if(price <= 0) return setPriceAlert({ msg: 'Poneme un precio fiera'})
         
         if(id) {
-            handleConfirmEditExpense({ category, type, price, id }) // Editar gasto
+            handleConfirmEditExpense({ category, type, price, id, user: expense.user }) // Editar gasto
         } else {
-            handleAddExpense({ category, type, price, id: Date.now() }) // Agregar gasto
+            handleAddExpense({ category, type, price, id: Date.now(), user }) // Agregar gasto
         }
         
         setCategory('')

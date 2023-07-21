@@ -5,11 +5,18 @@ const AdminContext = createContext()
 
 const AdminProvider = ({children}) => {
 
-    const [user, setUser] = useState(1)
+    const [user, setUser] = useState(null)
     const [formAddExpense, setFormAddExpense] = useState(false)
     const [expenses, setExpenses] = useState(JSON.parse(localStorage.getItem('expenses')) ?? [])
     const [total, setTotal] = useState(0)
     const [expense, setExpense] = useState({})
+
+    const resetApp = () => {
+        setExpenses([])
+        setTotal(0)
+        setUser(null)
+        localStorage.removeItem('expenses')
+    }
 
     const calcTotal = () => {
         const totalExpenses = expenses.reduce((acc, exp) => exp.price + acc, 0)
@@ -93,7 +100,6 @@ const AdminProvider = ({children}) => {
         deleteExpense(id)
     }
 
-    
 
     return <AdminContext.Provider
         value={{
@@ -109,6 +115,7 @@ const AdminProvider = ({children}) => {
             handleConfirmEditExpense,
             handleDeleteExpense,
             expense,
+            resetApp
         }}
     >
         {children}

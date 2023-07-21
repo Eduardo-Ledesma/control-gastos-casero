@@ -4,7 +4,7 @@ import styles from '../css/Animation.module.css'
 
 const Expense = ({expense}) => {
 
-    const { category, type, price, id } = expense
+    const { category, type, price, id, user } = expense
     const { handleEditExpense, handleDeleteExpense } = useAdmin()
 
     let showCategory
@@ -25,9 +25,12 @@ const Expense = ({expense}) => {
             break;
     }
 
+    const userName = user === 1 ? 'Edu' : 'Jan'
+
     const handleClick = expense => {
         Swal.fire({
             title: 'Que deseas hacer con el gasto?',
+            icon: 'question',
             showDenyButton: true,
             showCancelButton: true,
             confirmButtonText: 'Editar',
@@ -48,17 +51,23 @@ const Expense = ({expense}) => {
     }
 
     return (
-        <div className="flex min-w-fit hover:scale-110 hover:cursor-pointer transition-transform"
+        <div className="flex relative justify-center min-w-fit border-2 border-white rounded-xl hover:border-green-500 
+            hover:scale-105 sm:hover:scale-110 hover:cursor-pointer transition-all py-4 px-6"
             onClick={() => handleClick(expense)}
         >
-            <div className="border-2 border-white py-4 px-6 rounded-xl">
-
-                <h3 className="text-white text-center font-bold text-3xl mb-4">{type}</h3>
-                <div className="flex gap-4 items-center">        
+            
+            <p className="text-lg text-green-500 absolute left-2 top-2">{userName}</p>
+            <div className="flex flex-col">
+                <h3 className="text-white text-center font-bold text-3xl mb-4">
+                    {type}
+                </h3>
+                <div className="flex gap-6 items-center">        
                     <p className="text-2xl text-amber-500 font-bold">${price}</p>
-                    <p className="text-white bg-green-700 py-1 px-3 mx-auto text-center rounded-full text-md">{showCategory}</p>
-                </div>            
-            </div>
+                    <p className="text-white bg-green-700 py-1 px-3 mx-auto text-center rounded-full text-md">
+                        {showCategory}
+                    </p>
+                </div>     
+            </div>    
         </div>
     )
 }
