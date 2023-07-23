@@ -13,7 +13,7 @@ function App() {
   
   const { user, expenses, handleLogOut } = useAdmin()
   
-  let activeUser = user === 1 ? 'Edu' : 'Janis'
+  let activeUser = user === 1 ? 'Andrés' : 'Ana'
 
 
   const handleClick = () => {

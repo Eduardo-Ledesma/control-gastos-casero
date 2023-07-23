@@ -150,9 +150,11 @@ function FormAddExpense() {
                                             >
                                                 <option value="">-- Categoria --</option>
                                                 <option value="gastosFijos">Gastos Fijos</option>
-                                                <option value="compras">Compras</option>
-                                                <option value="gato">Gato</option>
+                                                <option value="comida">Comida</option>
+                                                <option value="gastosViaje">Gastos Viaje</option>
                                                 <option value="permitidos">Permitidos</option>
+                                                <option value="personales">Personales</option>
+                                                <option value="salidas">Salidas</option>
                                                 
                                             </select>
                                             { categoryAlert.msg && <p className='text-red-500 text-center mt-2 text-lg'>{categoryAlert.msg}</p>}
