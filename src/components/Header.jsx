@@ -7,14 +7,21 @@ import Swal from 'sweetalert2';
 const Header = () => {
 
     const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+    const [size, setSize] = useState(false)
     const { setFormAddExpense, resetApp } = useAdmin()
 
     useEffect(() => {
         const text = document.querySelector('#texto')
 
-        if(!text) return
+        if(!text) {
+            setSize(false)
+            return
+        }
         const textLoad = () => {
-            if(windowWidth < 1194) return
+            if(windowWidth < 1194) {
+                setSize(false)
+                return
+            }
             setTimeout(() => {
                 text.textContent = 'pollo';
             }, 0);
@@ -31,8 +38,9 @@ const Header = () => {
                 text.textContent = 'de todo!!!';
             }, 12000);
         }
-
+        if(size) return
         textLoad()
+        setSize(true)
         setInterval(textLoad, 15000);
     }, [windowWidth])
 
@@ -51,12 +59,13 @@ const Header = () => {
 
     const handleReset = () => {
         Swal.fire({
-            title: 'Borrar todos los gastos y resetear la app?',
-            icon: 'question',
+            title: 'Borrar todos los gastos?',
+            icon: 'warning',
+            iconColor: '#c54444',
             showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Resetear',
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Borrar',
             customClass: {
                 popup: animation.swal_popup,
                 title: animation.swal_title,
@@ -71,7 +80,6 @@ const Header = () => {
 
     return (
     <>
-    
         {windowWidth > 1194 ? (
             <div className='p-10 flex flex-col gap-10 lg:flex-row items-center justify-between'>
                 <div className='font-bold text-4xl overflow-hidden'>
@@ -86,7 +94,6 @@ const Header = () => {
                 <h1 className="text-gray-200 font-bold text-6xl">Control de gastos</h1>
                 <div className='font-bold text-4xl'>
                     <p className='text-gray-200'>¿Qué hay que <span className='text-green-600'>comprar?</span> </p>
-                    {/* <span className='text-green-600'>Mucha Comida</span> */}
                 </div>
             </div>
         )}

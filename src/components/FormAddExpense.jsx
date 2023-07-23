@@ -15,6 +15,10 @@ function FormAddExpense() {
     const { formAddExpense, handleFormAddExpense, handleAddExpense, expense, handleConfirmEditExpense, user } = useAdmin()
 
     useEffect(() => {
+        setCategoryAlert({})
+        setTypeAlert({})
+        setPriceAlert({})
+        
         if(formAddExpense === true) {
             if(expense?.category) {
                 const { category, type, price, id } = expense

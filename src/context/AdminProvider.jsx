@@ -21,7 +21,6 @@ const AdminProvider = ({children}) => {
     const resetApp = () => {
         setExpenses([])
         setTotal(0)
-        setUser(null)
         setExpensesUser1([])
         setExpensesUser2([])
         localStorage.removeItem('expenses')
@@ -110,6 +109,10 @@ const AdminProvider = ({children}) => {
         deleteExpense(id)
     }
 
+    const handleLogOut = () => {
+        setUser(null)
+    }
+
 
     return <AdminContext.Provider
         value={{
@@ -128,6 +131,7 @@ const AdminProvider = ({children}) => {
             resetApp,
             expensesUser1,
             expensesUser2,
+            handleLogOut
         }}
     >
         {children}
