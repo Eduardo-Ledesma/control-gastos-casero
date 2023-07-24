@@ -12,26 +12,20 @@ const Expense = ({expense}) => {
         case 'gastosFijos':
             showCategory = 'Gastos Fijos'
             break;
-        case 'comida':
-            showCategory = 'Comida'
+        case 'compras':
+            showCategory = 'Compras'
             break;
-        case 'gastosViaje':
-            showCategory = 'Gastos Viaje'
+        case 'gato':
+            showCategory = 'Gato'
             break;
         case 'permitidos':
             showCategory = 'Permitidos'
-            break;
-        case 'personales':
-            showCategory = 'Personales'
-            break;
-        case 'salidas':
-            showCategory = 'Salidas'
             break;
         default:
             break;
     }
 
-    const userName = user === 1 ? 'Andrés' : 'Ana'
+    const userName = user === 1 ? 'Edu' : 'Janis'
 
     const handleClick = expense => {
         Swal.fire({
