@@ -54,13 +54,13 @@ function FormAddExpense() {
     const handleSubmit = e => {
         e.preventDefault()
 
-        if(!category && !type.length && price <= 0) {
+        if(!category.length && !type.length && price <= 0) {
             setCategoryAlert({ msg: 'Elegime una categoria fiera'})
             setTypeAlert({ msg: 'Poneme un nombre fiera'})
             setPriceAlert({ msg: 'Poneme un precio fiera'})
             return
         }
-        if(!category) return setCategory({ msg: 'Elegime una categoria fiera'})
+        if(!category.length) return setCategoryAlert({ msg: 'Elegime una categoria fiera'})
         if(!type.trim()) return setTypeAlert({ msg: 'Poneme un nombre fiera'})
         if(price <= 0) return setPriceAlert({ msg: 'Poneme un precio fiera'})
         
