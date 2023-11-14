@@ -11,10 +11,7 @@ import styles from './css/Animation.module.css'
 
 function App() {
   
-  const { user, expenses, handleLogOut } = useAdmin()
-  
-  let activeUser = user === 1 ? 'Edu' : 'Janis'
-
+  const { username, access, expenses, handleLogOut } = useAdmin()
 
   const handleClick = () => {
     Swal.fire({
@@ -37,7 +34,7 @@ function App() {
 
   return (
     
-      !user ? (
+      !username || !access ? (
         <ChooseUser />
       ) : (
         <>
@@ -47,7 +44,7 @@ function App() {
           <ToastContainer />
           <main>
             <div className='p-4 xl:pl-10'>
-              <p className='text-white font-bold text-xl animate__animated animate__backInDown'>Usuario activo: <span className='text-green-500'>{activeUser}</span></p>
+              <p className='text-white font-bold text-xl animate__animated animate__backInDown'>Usuario activo: <span className='text-green-500'>{username}</span></p>
               <button type='button'
                 className='mt-2 hover:scale-110 transition-transform'
                 onClick={handleClick}

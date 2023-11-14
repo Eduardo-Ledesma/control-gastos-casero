@@ -6,34 +6,34 @@ function FormAddExpense() {
 
     const [id, setId] = useState(null)
     const [category, setCategory] = useState('')
-    const [type, setType] = useState('')
+    const [name, setName] = useState('')
     const [price, setPrice] = useState('')
     const [categoryAlert, setCategoryAlert] = useState({})
-    const [typeAlert, setTypeAlert] = useState({})
+    const [nameAlert, setNameAlert] = useState({})
     const [priceAlert, setPriceAlert] = useState({})
 
-    const { formAddExpense, handleFormAddExpense, handleAddExpense, expense, handleConfirmEditExpense, user } = useAdmin()
+    const { formAddExpense, handleFormAddExpense, handleAddExpense, expense, handleConfirmEditExpense, username } = useAdmin()
 
     useEffect(() => {
         setCategoryAlert({})
-        setTypeAlert({})
+        setNameAlert({})
         setPriceAlert({})
         
         if(formAddExpense === true) {
             if(expense?.category) {
-                const { category, type, price, id } = expense
+                const { category, name, price, id } = expense
                 setCategory(category)
-                setType(type)
+                setName(name)
                 setPrice(price)
                 setId(id)
             } else {
                 setCategory('')
-                setType('')
+                setName('')
                 setPrice('')
             }
         } else {
             setCategory('')
-            setType('')
+            setName('')
             setPrice('')
             setId(null)
         }
@@ -44,8 +44,8 @@ function FormAddExpense() {
     }, [category])
 
     useEffect(() => {
-        type.length && setTypeAlert({})
-    }, [type])
+        name.length && setNameAlert({})
+    }, [name])
 
     useEffect(() => {
         price > 0 && setPriceAlert({})
@@ -54,24 +54,24 @@ function FormAddExpense() {
     const handleSubmit = e => {
         e.preventDefault()
 
-        if(!category.length && !type.length && price <= 0) {
+        if(!category.length && !name.length && price <= 0) {
             setCategoryAlert({ msg: 'Elegime una categoria fiera'})
-            setTypeAlert({ msg: 'Poneme un nombre fiera'})
+            setNameAlert({ msg: 'Poneme un nombre fiera'})
             setPriceAlert({ msg: 'Poneme un precio fiera'})
             return
         }
         if(!category.length) return setCategoryAlert({ msg: 'Elegime una categoria fiera'})
-        if(!type.trim()) return setTypeAlert({ msg: 'Poneme un nombre fiera'})
+        if(!name.trim()) return setNameAlert({ msg: 'Poneme un nombre fiera'})
         if(price <= 0) return setPriceAlert({ msg: 'Poneme un precio fiera'})
         
         if(id) {
-            handleConfirmEditExpense({ category, type, price, id, user: expense.user }) // Editar gasto
+            handleConfirmEditExpense({ category, name, price, id, username }) // Editar gasto
         } else {
-            handleAddExpense({ category, type, price, id: Date.now(), user }) // Agregar gasto
+            handleAddExpense({ name, price, category, username }) // Agregar gasto
         }
         
         setCategory('')
-        setType('')
+        setName('')
         setPrice('')
         setId(null)
     }
@@ -157,13 +157,13 @@ function FormAddExpense() {
                                             { categoryAlert.msg && <p className='text-red-500 text-center mt-2 text-lg'>{categoryAlert.msg}</p>}
 
                                             <input type="text" 
-                                                name='type'
+                                                name='name'
                                                 placeholder='Nombre del gasto'
-                                                className={`py-2 px-3 mt-4 text-xl rounded-md focus:outline-none ${typeAlert.msg ? `border-4 border-red-600` : ''}`}
-                                                value={type}
-                                                onChange={e => setType(e.target.value)}
+                                                className={`py-2 px-3 mt-4 text-xl rounded-md focus:outline-none ${nameAlert.msg ? `border-4 border-red-600` : ''}`}
+                                                value={name}
+                                                onChange={e => setName(e.target.value)}
                                             />                                                
-                                            { typeAlert.msg && <p className='text-red-500 text-center mt-2 text-lg'>{typeAlert.msg}</p>}
+                                            { nameAlert.msg && <p className='text-red-500 text-center mt-2 text-lg'>{nameAlert.msg}</p>}
                                         </div>
 
                                         <div className='mb-5 flex flex-col'>

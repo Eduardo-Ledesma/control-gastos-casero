@@ -4,6 +4,7 @@ import App from './App.jsx'
 import './index.css'
 import { AdminProvider } from './context/AdminProvider.jsx'
 
+
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <AdminProvider>

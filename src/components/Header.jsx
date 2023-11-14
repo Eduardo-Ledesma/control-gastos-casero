@@ -57,7 +57,7 @@ const Header = () => {
         };
     }, []);
 
-    const handleReset = () => {
+    const handleReset = async () => {
         Swal.fire({
             title: 'Borrar todos los gastos?',
             icon: 'warning',
@@ -70,9 +70,9 @@ const Header = () => {
                 popup: animation.swal_popup,
                 title: animation.swal_title,
             }
-        }).then((result) => {
+        }).then( async (result) => {
             if (result.isConfirmed) {
-                resetApp()
+                await resetApp()
             }
         })
     }

@@ -1,7 +1,8 @@
 import useAdmin from '../hooks/useAdmin';
+import PasswordModal from './PasswordModal';
 
 const ChooseUser = () => {
-
+    
     const { handleUser } = useAdmin()
 
     return (
@@ -12,10 +13,10 @@ const ChooseUser = () => {
                 <button type='button'
                     className='w-1/2 mx-auto sm:mx-0 sm:w-auto border-2 border-green-600 rounded-md hover:cursor-pointer transition-all 
                     hover:scale-110 hover:border-white'
-                    onClick={() => handleUser(1)}  
+                    onClick={() => handleUser("Edu")}  
                 >
                     <p className='font-bold text-2xl sm:text-4xl text-center py-2 text-green-600'>Edu</p>
-                    <img src="/img/messi.webp" alt="foto ledu"
+                    <img src="/img/Messi.webp" alt="foto ledu"
                     className='w-auto sm:w-52 border-t-2 border-green-600 hover:border-white transition-colors'
                     />
                 </button>
@@ -23,14 +24,15 @@ const ChooseUser = () => {
                 <button type='button' 
                     className='w-1/2 mx-auto sm:mx-0 sm:w-auto border-2 border-green-600 rounded-md hover:cursor-pointer transition-all 
                     hover:scale-110 hover:border-white'
-                    onClick={() => handleUser(2)}
+                    onClick={() => handleUser("Janis")}
                 >
                     <p className='font-bold text-2xl sm:text-4xl text-center py-2 text-green-600'>Janis</p>
-                    <img src="/img/kim.webp" alt="foto janis"
+                    <img src="/img/emilia.png" alt="foto janis"
                     className='w-auto sm:w-52 border-t-2 border-green-600 hover:border-white transition-colors'
                     />
                 </button>
             </div>
+            <PasswordModal />
         </main>
     )
 }
