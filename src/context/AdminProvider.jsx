@@ -18,8 +18,11 @@ const AdminProvider = ({children}) => {
     const [wrongPassword, setWrongPassword] = useState(false)
 
     const divideExpenses = () => {
-        setExpensesUser1(expenses.filter(exp => exp.username === 'Edu').reduce((acc, exp) => exp.price + acc, 0))
-        setExpensesUser2(expenses.filter(exp => exp.username === 'Janis').reduce((acc, exp) => exp.price + acc, 0))
+        console.log(expenses);
+        if(expenses.length > 0) {
+            setExpensesUser1(expenses.filter(exp => exp.username === 'Edu').reduce((acc, exp) => exp.price + acc, 0))
+            setExpensesUser2(expenses.filter(exp => exp.username === 'Janis').reduce((acc, exp) => exp.price + acc, 0))
+        }
     }    
 
     const resetApp = async () => {
@@ -34,8 +37,10 @@ const AdminProvider = ({children}) => {
     }
 
     const calcTotal = () => {
-        const totalExpenses = expenses.reduce((acc, exp) => exp.price + acc, 0)
-        setTotal(totalExpenses);
+        if(expenses.length > 0) {
+            const totalExpenses = expenses.reduce((acc, exp) => exp.price + acc, 0)
+            setTotal(totalExpenses);
+        }
     }
 
     useEffect(() => {
@@ -56,6 +61,7 @@ const AdminProvider = ({children}) => {
         try {
             const result = await fetch(import.meta.env.VITE_BACKEND_URL)
             const expenses = await result.json()
+            console.log(result);
             setExpenses(expenses);
         } catch (error) {
             console.log(error);
