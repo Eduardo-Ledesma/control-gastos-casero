@@ -11,7 +11,7 @@ import styles from './css/Animation.module.css'
 
 function App() {
   
-  const { username, access, expenses, handleLogOut } = useAdmin()
+  const { username, access, expenses, handleLogOut, apiDown } = useAdmin()
 
   const handleClick = () => {
     Swal.fire({
@@ -36,6 +36,10 @@ function App() {
     
       !username || !access ? (
         <ChooseUser />
+      ) : apiDown ? (
+        <div className='flex flex-col items-center gap-10 mt-10 text-3xl text-gray-200 p-6'>
+          <p>Se cayó again D:</p>
+        </div>
       ) : (
         <>
           <header>

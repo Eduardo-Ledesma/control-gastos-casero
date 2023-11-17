@@ -16,6 +16,7 @@ const AdminProvider = ({children}) => {
     const [password, setPassword] = useState('')
     const [access, setAccess] = useState(JSON.parse(localStorage.getItem('access')) ?? false)
     const [wrongPassword, setWrongPassword] = useState(false)
+    const [apiDown, setApiDown] = useState(false)
 
     const divideExpenses = () => {
         if(expenses.length > 0) {
@@ -62,7 +63,7 @@ const AdminProvider = ({children}) => {
             const expenses = await result.json()
             setExpenses(expenses);
         } catch (error) {
-            console.log(error);
+            setApiDown(true);
         }
     }
 
@@ -233,7 +234,8 @@ const AdminProvider = ({children}) => {
             handleSetPassword,
             handlePasswordSubmit,
             access,
-            wrongPassword
+            wrongPassword,
+            apiDown
         }}
     >
         {children}
