@@ -4,7 +4,7 @@ import styles from '../css/Animation.module.css'
 
 const Expense = ({expense}) => {
 
-    const { category, name, price, id, username } = expense
+    const { category, name, price, id, username, date } = expense
     const { handleGetExpenseById, handleEditExpense, handleDeleteExpense } = useAdmin()
 
     let showCategory
@@ -55,6 +55,7 @@ const Expense = ({expense}) => {
         >
             
             <p className="text-lg text-green-500 absolute left-2 top-2">{username}</p>
+            <p className="text-sm text-green-500 absolute right-2 top-2">{date}</p>
             <div className="flex flex-col md:justify-between">
                 <h3 className="text-white text-center font-bold text-3xl pt-4 mb-4">{name}</h3>
                 <div className="flex gap-6 items-center">        

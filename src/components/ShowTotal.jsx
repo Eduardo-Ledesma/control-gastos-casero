@@ -14,10 +14,10 @@ const ShowTotal = () => {
     const { total, expenses, expensesUser1, expensesUser2 } = useAdmin()
 
     const calculateCategory = () => {
-        setFixed(expenses.filter(exp => exp.category === 'gastosFijos').reduce((acc, exp) => exp.price + acc, 0))
-        setBuys(expenses.filter(exp => exp.category === 'compras').reduce((acc, exp) => exp.price + acc, 0))
-        setCat(expenses.filter(exp => exp.category === 'gato').reduce((acc, exp) => exp.price + acc, 0))
-        setAllowed(expenses.filter(exp => exp.category === 'permitidos').reduce((acc, exp) => exp.price + acc, 0))
+        setFixed(expenses.filter(exp => exp.category === 'gastosFijos').reduce((acc, exp) => Number(exp.price) + acc, 0))
+        setBuys(expenses.filter(exp => exp.category === 'compras').reduce((acc, exp) => Number(exp.price) + acc, 0))
+        setCat(expenses.filter(exp => exp.category === 'gato').reduce((acc, exp) => Number(exp.price) + acc, 0))
+        setAllowed(expenses.filter(exp => exp.category === 'permitidos').reduce((acc, exp) => Number(exp.price) + acc, 0))
     }
 
     const calculateDivision = () => {

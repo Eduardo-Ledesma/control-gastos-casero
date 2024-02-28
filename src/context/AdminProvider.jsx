@@ -13,22 +13,23 @@ const AdminProvider = ({children}) => {
     const [expensesUser1, setExpensesUser1] = useState([])
     const [expensesUser2, setExpensesUser2] = useState([])
     const [passwordModal, setPasswordModal] = useState(false)
-    const [password, setPassword] = useState('')
+    const [password, setPassword] = useState(JSON.parse(sessionStorage.getItem('pswr')) ?? '')
     const [access, setAccess] = useState(JSON.parse(localStorage.getItem('access')) ?? false)
     const [wrongPassword, setWrongPassword] = useState(false)
     const [apiDown, setApiDown] = useState(false)
 
     const divideExpenses = () => {
         if(expenses.length > 0) {
-            setExpensesUser1(expenses.filter(exp => exp.username === 'Edu').reduce((acc, exp) => exp.price + acc, 0))
-            setExpensesUser2(expenses.filter(exp => exp.username === 'Janis').reduce((acc, exp) => exp.price + acc, 0))
+            setExpensesUser1(expenses.filter(exp => exp.username === 'Edu').reduce((acc, exp) => Number(exp.price) + acc, 0))
+            setExpensesUser2(expenses.filter(exp => exp.username === 'Janis').reduce((acc, exp) => Number(exp.price) + acc, 0))
         }
     }    
 
     const resetApp = async () => {
         try {
-            const result = await fetch(import.meta.env.VITE_BACKEND_URL, { method: 'DELETE' })
-            if(result.ok) {
+            const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}-reset`, { method: 'DELETE' })
+            const result = await response.json()
+            if(result.result === 'ok') {
                 await getAllExpenses()
             }
         } catch (error) {
@@ -38,7 +39,7 @@ const AdminProvider = ({children}) => {
 
     const calcTotal = () => {
         if(expenses.length > 0) {
-            const totalExpenses = expenses.reduce((acc, exp) => exp.price + acc, 0)
+            const totalExpenses = expenses.reduce((acc, exp) => Number(exp.price) + acc, 0)
             setTotal(totalExpenses);
         }
     }
@@ -59,35 +60,26 @@ const AdminProvider = ({children}) => {
 
     const getAllExpenses = async () => {
         try {
-            const result = await fetch(import.meta.env.VITE_BACKEND_URL)
-            const expenses = await result.json()
-            setExpenses(expenses);
-        } catch (error) {
-            setApiDown(true);
-        }
-    }
-
-    const getExpenseById = async id => {
-        try {
-            const result = await fetch(`${import.meta.env.VITE_BACKEND_URL}/${id}`)
-            const expense = await result.json()
-            if(expense) {
-                return expense
+            const response = await fetch(import.meta.env.VITE_BACKEND_URL)
+            const result = await response.json()
+            if(result.result === 'ok') {
+                setExpenses(result.expenses);
             }
         } catch (error) {
-            console.log(error);
+            setApiDown(true);
         }
     }
 
     // Agregar el gasto
     const addExpense = async expense => {
         try {
-            const result = await fetch(import.meta.env.VITE_BACKEND_URL, {
+            const response = await fetch(import.meta.env.VITE_BACKEND_URL, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(expense)
             })
-            if(result.ok) {
+            const result = await response.json()
+            if(result.result === 'ok') {
                 await getAllExpenses()
                 handleFormAddExpense()
                 toast.success('Gasto Agregado!', {
@@ -104,12 +96,13 @@ const AdminProvider = ({children}) => {
     // Editar el gasto
     const editExpense = async expense => {
         try {
-            const result = await fetch(`${import.meta.env.VITE_BACKEND_URL}/${expense.id}`, {
-                method: 'PATCH',
+            const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}`, {
+                method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(expense)
             })
-            if(result.ok) {
+            const result = await response.json()
+            if(result.result === 'ok') {
                 await getAllExpenses()
                 handleFormAddExpense()
                 toast.success('Gasto Editado Correctamente!', {
@@ -126,8 +119,12 @@ const AdminProvider = ({children}) => {
     // Eliminar el gasto
     const deleteExpense = async id => {
         try {
-            const result = await fetch(`${import.meta.env.VITE_BACKEND_URL}/${id}`, { method: 'DELETE' })
-            if (result.ok) {
+            const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}?id=${id}`, { 
+                method: 'DELETE',
+                headers: { 'Content-Type': 'application/json' }
+            })
+            const result = await response.json()
+            if (result.result === 'ok') {
                 await getAllExpenses()
                 handleFormAddExpense()
                 toast.success('Gasto Eliminado!', {
@@ -144,11 +141,17 @@ const AdminProvider = ({children}) => {
     // Definir el usuario
     const handleUser = username => {
         setUsername(username)
-        setPasswordModal(true)
+        if(!password.length) {
+            setPasswordModal(true)
+        } else {
+            setAccess(true)
+            localStorage.setItem('username', JSON.stringify(username))
+            localStorage.setItem('access', JSON.stringify(true))
+        }
     }
 
     const handleGetExpenseById = async id => {
-        const [expense] = await getExpenseById(id)
+        const expense = expenses.find(exp => exp.id === id)
         return expense;
     }
 
@@ -195,6 +198,8 @@ const AdminProvider = ({children}) => {
 
         if(password === import.meta.env.VITE_API_PASSWORD) {
             setAccess(true)
+            sessionStorage.setItem('pswr', JSON.stringify(password))
+            handleHidePasswordModal()
             localStorage.setItem('username', JSON.stringify(username))
             localStorage.setItem('access', JSON.stringify(true))
         } else {
