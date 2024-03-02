@@ -75,7 +75,7 @@ const AdminProvider = ({children}) => {
         try {
             const response = await fetch(import.meta.env.VITE_BACKEND_URL, {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: { 'Content-Type': 'application/json', Accept: '*/*' },
                 body: JSON.stringify(expense)
             })
             const result = await response.json()
@@ -98,7 +98,7 @@ const AdminProvider = ({children}) => {
         try {
             const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}`, {
                 method: 'PUT',
-                headers: { 'Content-Type': 'application/json' },
+                headers: { 'Content-Type': 'application/json', Accept: '*/*' },
                 body: JSON.stringify(expense)
             })
             const result = await response.json()
@@ -121,7 +121,7 @@ const AdminProvider = ({children}) => {
         try {
             const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}?id=${id}`, { 
                 method: 'DELETE',
-                headers: { 'Content-Type': 'application/json' }
+                headers: { 'Content-Type': 'application/json', Accept: '*/*' }
             })
             const result = await response.json()
             if (result.result === 'ok') {
