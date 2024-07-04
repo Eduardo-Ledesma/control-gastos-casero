@@ -17,6 +17,8 @@ const AdminProvider = ({children}) => {
     const [access, setAccess] = useState(JSON.parse(localStorage.getItem('access')) ?? false)
     const [wrongPassword, setWrongPassword] = useState(false)
     const [apiDown, setApiDown] = useState(false)
+    const [isSubmiting, setIsSubmiting] = useState(false)
+    const [isLoading, setIsLoading] = useState(false)
 
     const divideExpenses = () => {
         if(expenses.length > 0) {
@@ -59,19 +61,23 @@ const AdminProvider = ({children}) => {
     }, [expenses])
 
     const getAllExpenses = async () => {
+        setIsLoading(true)
         try {
             const response = await fetch(import.meta.env.VITE_BACKEND_URL)
             const result = await response.json()
             if(result.result === 'ok') {
                 setExpenses(result.expenses);
+                setIsLoading(false)
             }
         } catch (error) {
+            setIsLoading(false)
             setApiDown(true);
         }
     }
 
     // Agregar el gasto
     const addExpense = async expense => {
+        setIsSubmiting(true)
         try {
             const response = await fetch(import.meta.env.VITE_BACKEND_URL, {
                 method: 'POST',
@@ -82,19 +88,18 @@ const AdminProvider = ({children}) => {
             if(result.result === 'ok') {
                 await getAllExpenses()
                 handleFormAddExpense()
-                toast.success('Gasto Agregado!', {
-                    position: "top-center",
-                    autoClose: 3000,
-                    theme: "colored",
-                });
+                setIsSubmiting(false)
+                return 200
             }
         } catch (error) {
-            console.log(error);
+            setIsSubmiting(false)
+            return 500
         }
     }
 
     // Editar el gasto
     const editExpense = async expense => {
+        setIsSubmiting(true)
         try {
             const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}`, {
                 method: 'PUT',
@@ -105,14 +110,12 @@ const AdminProvider = ({children}) => {
             if(result.result === 'ok') {
                 await getAllExpenses()
                 handleFormAddExpense()
-                toast.success('Gasto Editado Correctamente!', {
-                    position: "top-center",
-                    autoClose: 3000,
-                    theme: "colored",
-                });
+                setIsSubmiting(false)
+                return 200
             }
         } catch (error) {
-            console.log(error);
+            setIsSubmiting(false)
+            return 500
         }
     }
 
@@ -163,7 +166,8 @@ const AdminProvider = ({children}) => {
 
     // Handle para manejar agregar gasto
     const handleAddExpense = async expense => {
-        await addExpense(expense)
+        const res = await addExpense(expense)
+        return res
     }
 
     // handle para llenar el form con el gasto a editar
@@ -174,7 +178,8 @@ const AdminProvider = ({children}) => {
 
     // Handle para manejar confirmar editar gasto
     const handleConfirmEditExpense = async expense => {
-        await editExpense(expense)
+        const res = await editExpense(expense)
+        return res
     }
 
     // Handle para manejar eliminar gasto
@@ -240,7 +245,9 @@ const AdminProvider = ({children}) => {
             handlePasswordSubmit,
             access,
             wrongPassword,
-            apiDown
+            apiDown,
+            isSubmiting,
+            isLoading
         }}
     >
         {children}

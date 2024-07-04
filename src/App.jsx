@@ -8,10 +8,11 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Swal from 'sweetalert2';
 import styles from './css/Animation.module.css'
+import { FadeLoader } from 'react-spinners';
 
 function App() {
   
-  const { username, access, expenses, handleLogOut, apiDown } = useAdmin()
+  const { username, access, expenses, handleLogOut, apiDown, isLoading } = useAdmin()
 
   const handleClick = () => {
     Swal.fire({
@@ -61,6 +62,10 @@ function App() {
               <div className='flex flex-col items-center gap-10 mt-10 text-3xl text-gray-200 p-6'>
                 <p>Se cayó again D:</p>
               </div>
+            ) : isLoading ? (
+              <div className='flex justify-center mt-8'>
+                <FadeLoader color='white' size={60} />
+              </div> 
             ) : expenses.length ? (
               <article className='mt-6 md:mt-0'>
                   <h2 className='text-center text-4xl text-green-400 mb-14 font-bold'>Gastos Registrados:</h2>

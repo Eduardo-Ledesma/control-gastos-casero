@@ -1,6 +1,8 @@
 import { useState, useEffect, Fragment } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import useAdmin from '../hooks/useAdmin'
+import { toast } from "react-toastify"
+import BeatLoader from 'react-spinners/BeatLoader'
 
 function FormAddExpense() {
 
@@ -12,7 +14,7 @@ function FormAddExpense() {
     const [nameAlert, setNameAlert] = useState({})
     const [priceAlert, setPriceAlert] = useState({})
 
-    const { formAddExpense, handleFormAddExpense, handleAddExpense, expense, handleConfirmEditExpense, username } = useAdmin()
+    const { formAddExpense, handleFormAddExpense, handleAddExpense, expense, handleConfirmEditExpense, username, isSubmiting } = useAdmin()
 
     useEffect(() => {
         setCategoryAlert({})
@@ -51,7 +53,14 @@ function FormAddExpense() {
         price > 0 && setPriceAlert({})
     }, [price])
 
-    const handleSubmit = e => {
+    const resetForm = () => {
+        setCategory('')
+        setName('')
+        setPrice('')
+        setId(null)
+    }
+
+    const handleSubmit = async e => {
         e.preventDefault()
 
         if(!category.length && !name.length && price <= 0) {
@@ -64,16 +73,35 @@ function FormAddExpense() {
         if(!name.trim()) return setNameAlert({ msg: 'Poneme un nombre fiera'})
         if(price <= 0) return setPriceAlert({ msg: 'Poneme un precio fiera'})
         
+        let response
         if(id) {
-            handleConfirmEditExpense({ category, name, price, id, username }) // Editar gasto
+            response = await handleConfirmEditExpense({ category, name, price, id, username }) // Editar gasto
         } else {
-            handleAddExpense({ name, price, category, username }) // Agregar gasto
+            response = await handleAddExpense({ name, price, category, username }) // Agregar gasto
         }
-        
-        setCategory('')
-        setName('')
-        setPrice('')
-        setId(null)
+
+        if(response === 200) {
+            if(id) {
+                toast.success('Gasto Editado Correctamente!', {
+                    position: "top-center",
+                    autoClose: 3000,
+                    theme: "colored",
+                });
+            } else {
+                toast.success('Gasto Agregado!', {
+                    position: "top-center",
+                    autoClose: 3000,
+                    theme: "colored",
+                });
+            }
+            resetForm()
+        } else {
+            toast.error('Algo salió mal D:', {
+                position: "top-center",
+                autoClose: 3000,
+                theme: "colored",
+            });
+        }
     }
 
     return (
@@ -183,11 +211,12 @@ function FormAddExpense() {
                                             { priceAlert.msg && <p className='text-red-500 text-center mt-2 text-lg'>{priceAlert.msg}</p>}
                                         </div>
 
-                                        <input type="submit"
-                                            value={ expense?.category ? 'Editar gasto' : 'Agregar gasto'}
+                                        <button onClick={handleSubmit}
                                             className='bg-green-700 hover:bg-green-800 w-full p-3 mt-4 text-white uppercase 
                                             font-bold hover:cursor-pointer transition-colors rounded text-lg'
-                                        />
+                                        >
+                                            { isSubmiting ? <BeatLoader color='white' size={13} /> : expense?.category ? 'Editar gasto' : 'Agregar gasto'}
+                                        </button>
                                     </form>
                                 </div>
                             </div>
