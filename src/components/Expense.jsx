@@ -1,6 +1,7 @@
 import useAdmin from "../hooks/useAdmin"
 import Swal from "sweetalert2"
 import styles from '../css/Animation.module.css'
+import { maskNumber } from '../utils'
 
 const Expense = ({expense}) => {
 
@@ -50,16 +51,16 @@ const Expense = ({expense}) => {
 
     return (
         <div className="flex relative justify-center min-w-fit border-2 border-white rounded-xl hover:border-green-500 
-            hover:scale-105 sm:hover:scale-110 hover:cursor-pointer transition-all py-4 px-6"
+            hover:scale-105 sm:hover:scale-110 hover:cursor-pointer transition-all py-4 px-4"
             onClick={() => handleClick(id)}
         >
             
-            <p className="text-lg text-green-500 absolute left-2 top-2">{username}</p>
-            <p className="text-sm text-green-500 absolute right-2 top-2">{date}</p>
-            <div className="flex flex-col md:justify-between">
-                <h3 className="text-white text-center font-bold text-3xl pt-4 mb-4">{name}</h3>
+            <p className="text-lg text-green-500 absolute left-3 top-2">{username}</p>
+            <p className="text-sm text-green-500 absolute right-3 top-2">{date}</p>
+            <div className="flex flex-col md:justify-between self-end">
+                <h3 className="text-white text-center font-bold text-3xl pt-6 mb-4">{name}</h3>
                 <div className="flex gap-6 items-center">        
-                    <p className="text-2xl text-amber-500 font-bold">${price}</p>
+                    <p className="text-2xl text-amber-500 font-bold">{maskNumber(price)}</p>
                     <p className="text-white bg-green-700 py-1 px-3 mx-auto text-center rounded-full text-md">
                         {showCategory}
                     </p>
