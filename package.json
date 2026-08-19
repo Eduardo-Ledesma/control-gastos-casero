@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@headlessui/react": "^1.7.15",
+    "@supabase/supabase-js": "^2.111.0",
     "animate.css": "^4.1.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",

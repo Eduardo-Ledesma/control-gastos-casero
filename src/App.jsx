@@ -12,7 +12,15 @@ import { FadeLoader } from 'react-spinners';
 
 function App() {
   
-  const { username, access, expenses, handleLogOut, apiDown, isLoading } = useAdmin()
+  const { username, access, authReady, expenses, handleLogOut, apiDown, isLoading } = useAdmin()
+
+  if (!authReady) {
+    return (
+      <div className='flex justify-center mt-20'>
+        <FadeLoader color='white' size={60} />
+      </div>
+    )
+  }
 
   const handleClick = () => {
     Swal.fire({
